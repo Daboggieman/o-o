@@ -2,7 +2,7 @@ name: Create daily file
 
 on:
   schedule:
-    - cron: "5 0 * * *"   # 00:05 UTC every day — adjust to your timezone
+    - cron: "5 0 * * 1-5"   # 00:05 UTC, Monday–Friday only
   workflow_dispatch: {}    # lets you trigger it manually from the Actions tab
 
 permissions:

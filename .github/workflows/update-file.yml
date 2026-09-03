@@ -1,8 +1,8 @@
-name: Update file every 4 hours
+name: Update file (random 1-5hr gaps, weekdays)
 
 on:
   schedule:
-    - cron: "0 */4 * * *"   # every 4 hours, on the hour, UTC
+    - cron: "0 * * * 1-5"   # checks every hour, Monday–Friday; script decides if it's due
   workflow_dispatch: {}
 
 permissions:
@@ -18,6 +18,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
       - name: Update today's file
         run: python scripts/update_daily_file.py

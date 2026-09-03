@@ -58,20 +58,27 @@ your-repo/
    manually any time from the **Actions** tab (both include
    `workflow_dispatch`, which adds a "Run workflow" button).
 
-## Customizing the message content
+## Message content: random motivational quotes
 
-`update_daily_file.py` has a `generate_message()` function that
-currently returns a placeholder string:
+`generate_message()` in `update_daily_file.py` fetches a random
+quote from the [DummyJSON quotes API](https://dummyjson.com/quotes/random)
+(no key required) and formats it as:
 
-```python
-def generate_message() -> str:
-    return "Scheduled check-in."
+```
+"The only way to do great work is to love what you do." — Steve Jobs
 ```
 
-Replace this with whatever you actually want logged — e.g. pulling
-from an API, reading a queue, picking a random line from a file, or
-computing something. This is the only part of the automation you're
-likely to need to change regularly.
+If the API call fails for any reason — network issue, timeout, rate
+limit, downtime — it silently falls back to a small hardcoded list of
+quotes in the same file (`FALLBACK_QUOTES`), so a scheduled run never
+fails just because an external service is down. Add more quotes to
+that list any time.
+
+This does add one dependency, `requests`, which is installed by the
+`Install dependencies` step in `update-file.yml` from
+`requirements.txt`. If you'd rather have zero external dependencies,
+delete the `requests` call from `generate_message()` and always draw
+from `FALLBACK_QUOTES` (or expand that list to give it more variety).
 
 ## Adjusting the schedule
 
