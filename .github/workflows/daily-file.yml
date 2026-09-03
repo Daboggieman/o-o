@@ -1,0 +1,23 @@
+name: Create daily file
+
+on:
+  schedule:
+    - cron: "5 0 * * *"   # 00:05 UTC every day — adjust to your timezone
+  workflow_dispatch: {}    # lets you trigger it manually from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  create-file:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create today's file
+        run: python scripts/create_daily_file.py

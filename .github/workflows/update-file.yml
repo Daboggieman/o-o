@@ -1,0 +1,23 @@
+name: Update file every 4 hours
+
+on:
+  schedule:
+    - cron: "0 */4 * * *"   # every 4 hours, on the hour, UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update-file:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Update today's file
+        run: python scripts/update_daily_file.py
